@@ -1,6 +1,6 @@
 {
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "types": ["@nuxt/types", "@nust/image"]
+    "types": ["@nuxt/types", "@nuxt/image"]
   }
 }
