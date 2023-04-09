@@ -1,8 +1,5 @@
 <template>
-  <main>
-    <Navbar />
-    <Info />
-  </main>
+  <div></div>
 </template>
 
 <script setup lang="ts"></script>

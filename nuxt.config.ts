@@ -10,8 +10,11 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@nuxtjs/eslint-module", "@nuxt/image"],
+  modules: ["@nuxt/image-edge"],
   typescript: {
     strict: true,
+  },
+  image: {
+    domains: ["raw.githubusercontent.com"],
   },
 });

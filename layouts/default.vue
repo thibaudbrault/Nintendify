@@ -12,4 +12,16 @@
 
 <script setup lang="ts"></script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
