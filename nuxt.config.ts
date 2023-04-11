@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  css: ["@/assets/css/reset.scss"],
+  css: ['@/assets/css/reset.scss'],
   vite: {
     css: {
       preprocessorOptions: {
@@ -10,11 +10,11 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ["@nuxt/image-edge"],
+  modules: ['@nuxt/image-edge'],
   typescript: {
     strict: true,
   },
   image: {
-    domains: ["raw.githubusercontent.com"],
+    domains: ['raw.githubusercontent.com'],
   },
-});
+})

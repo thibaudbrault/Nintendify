@@ -2,25 +2,46 @@
   <main>
     <!-- <Navbar /> -->
     <Info :music="music" />
-    <PlayerButtons :audio="audio" :tracksLength="tracksLength" />
+    <PlayerButtons
+      :tracks-length="tracksLength"
+      :audioText="audioText"
+      @emitPlayPause="playPause"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
-let audio = ref<HTMLAudioElement | null>(null);
-let tracksLength = ref<number | null>(null);
-const trackNb = useTrackNb();
+const audio = ref<HTMLAudioElement | null>(null)
+const trackNb = useTrackNb()
+const isPlaying = ref<boolean>(false)
+const audioText = ref<string>('play')
 
-const { data: music } = await useFetch("/api/nes/SMB/musics", {
+const { data: music } = await useFetch('/api/nes/SMB/musics', {
   transform: (_music) => _music.data,
-});
+})
 
 onMounted(() => {
   if (music.value) {
-    tracksLength.value = music.value.length;
-    audio.value = new Audio(music.value[trackNb.value].link);
+    audio.value = new Audio(music.value[trackNb.value].link)
   }
-});
+})
+
+const playPause = () => {
+  if (audio) {
+    isPlaying.value = !isPlaying.value
+    if (!isPlaying.value) {
+      audioText.value = 'play'
+      audio.value?.pause()
+    } else {
+      audioText.value = 'pause'
+      audio.value?.play()
+    }
+  }
+}
+
+const tracksLength = computed(() => {
+  return music.value?.length
+})
 </script>
 
 <style lang="scss" scoped></style>

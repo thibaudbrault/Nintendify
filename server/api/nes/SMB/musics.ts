@@ -1,7 +1,7 @@
-import data from "./musics.json";
+import data from './musics.json'
 
 export default defineEventHandler(() => {
   return {
     data,
-  };
-});
+  }
+})

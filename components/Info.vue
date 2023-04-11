@@ -7,10 +7,10 @@
 </template>
 
 <script setup lang="ts">
-const trackNb = useTrackNb();
+const trackNb = useTrackNb()
 const { music } = defineProps<{
-  music: any;
-}>();
+  music: any
+}>()
 </script>
 
 <style lang="scss" scoped>

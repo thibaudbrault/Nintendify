@@ -1,48 +1,41 @@
 <template>
   <button @click="previous">Previous</button>
-  <button @click="playPause">
+  <button @click="playPauseEvent">
     {{ audioText }}
   </button>
   <button @click="next">Next</button>
 </template>
 
 <script setup lang="ts">
-const trackNb = useTrackNb();
-const { audio, tracksLength } = defineProps<{
-  audio: HTMLAudioElement | null;
-  tracksLength: number | null;
-}>();
-let audioText = ref<string>("play");
-let isPlaying = ref<boolean>(false);
+const emit = defineEmits(['emitPlayPause'])
+const trackNb = useTrackNb()
+const props = defineProps<{
+  tracksLength: number | undefined
+  audioText: string
+}>()
+const tracksLength = toRef(props, 'tracksLength')
 
-const playPause = () => {
-  if (audio) {
-    isPlaying.value = !isPlaying.value;
-    if (!isPlaying.value) {
-      audioText.value = "play";
-      audio.pause();
-    } else {
-      audioText.value = "pause";
-      audio.play();
-    }
-  }
-};
+const playPauseEvent = () => {
+  emit('emitPlayPause')
+}
 
 const previous = () => {
   if (trackNb.value === 0) {
-    trackNb.value = 0;
+    trackNb.value = 0
   } else {
-    trackNb.value--;
+    trackNb.value--
   }
-};
+}
 
 const next = () => {
-  if (trackNb.value === tracksLength) {
-    trackNb.value = tracksLength;
-  } else {
-    trackNb.value++;
+  if (tracksLength.value) {
+    if (trackNb.value === tracksLength.value - 1) {
+      trackNb.value = tracksLength.value - 1
+    } else {
+      trackNb.value++
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>
