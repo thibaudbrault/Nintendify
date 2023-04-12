@@ -8,8 +8,8 @@
 
 <style lang="scss" scoped>
 .wrapper {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
   background-color: $secondary;
   color: $primary;
 }

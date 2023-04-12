@@ -7,13 +7,11 @@
 </template>
 
 <script setup lang="ts">
+import { TrackKey } from '~/types/Symbols'
+
 const emit = defineEmits(['emitPlayPause'])
 const trackNb = useTrackNb()
-const props = defineProps<{
-  tracksLength: number | undefined
-  audioText: string
-}>()
-const tracksLength = toRef(props, 'tracksLength')
+const { tracksLength, audioText } = inject(TrackKey)
 
 const playPauseEvent = () => {
   emit('emitPlayPause')
