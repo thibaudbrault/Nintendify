@@ -10,7 +10,5 @@
 .wrapper {
   min-height: 100vh;
   min-width: 100vw;
-  background-color: $secondary;
-  color: $primary;
 }
 </style>

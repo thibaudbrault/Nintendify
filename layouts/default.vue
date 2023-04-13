@@ -1,27 +1,39 @@
 <template>
-  <header>
-    <h1>Hello</h1>
-  </header>
+  <div class="grid-container">
+    <header>
+      <h1>Name</h1>
+      <button>Connect</button>
+    </header>
 
-  <slot />
+    <nav>
+      <NuxtLink to="/">Home</NuxtLink>
+      <NuxtLink to="/favorites">Favorites</NuxtLink>
+    </nav>
 
-  <footer>
-    <p>footer</p>
-  </footer>
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>footer</p>
+    </footer>
+  </div>
 </template>
 
 <script setup lang="ts"></script>
 
-<style lang="scss" scoped>
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+<style lang="postcss" scoped>
+.grid-container {
+  @apply h-screen grid grid-cols-[auto_1fr] grid-rows-[auto_1fr_auto];
 }
 
+header,
+main,
 footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply row-span-1 col-span-1;
+}
+
+nav {
+  @apply row-span-full;
 }
 </style>
