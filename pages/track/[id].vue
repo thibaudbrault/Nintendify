@@ -1,6 +1,6 @@
 <template>
   <main>
-    <PlayerIndex @emit-play-pause="playPause" />
+    <!-- <PlayerIndex @emit-play-pause="playPause" /> -->
   </main>
 </template>
 
@@ -8,43 +8,50 @@
 import { provide } from 'vue'
 import { TrackKey } from '~/types/Symbols'
 
+const client = useSupabaseClient()
 const audio = ref<HTMLAudioElement | null>(null)
 const trackNb = useTrackNb()
 const isPlaying = ref<boolean>(false)
 const audioText = ref<string>('play')
 
-const { data: music } = await useFetch('/api/nes/SMB/musics', {
-  transform: (_music) => _music.data,
-})
-
-onMounted(() => {
-  if (music.value) {
-    audio.value = new Audio(music.value[trackNb.value].link)
+const { data: music } = await useAsyncData(
+  'Musics',
+  async () => client.from('Musics').select('*').order('id'),
+  {
+    transform: (result) => result.data,
   }
-})
+)
 
-const playPause = () => {
-  if (audio) {
-    isPlaying.value = !isPlaying.value
-    if (!isPlaying.value) {
-      audioText.value = 'play'
-      audio.value?.pause()
-    } else {
-      audioText.value = 'pause'
-      audio.value?.play()
-    }
-  }
-}
+console.log(music.value)
 
-const tracksLength = computed(() => {
-  return music.value?.length
-})
+// onMounted(() => {
+//   if (music.value) {
+//     audio.value = new Audio(music.value[trackNb.value].link)
+//   }
+// })
 
-provide(TrackKey, {
-  audioText,
-  tracksLength,
-  music,
-})
+// const playPause = () => {
+//   if (audio) {
+//     isPlaying.value = !isPlaying.value
+//     if (!isPlaying.value) {
+//       audioText.value = 'play'
+//       audio.value?.pause()
+//     } else {
+//       audioText.value = 'pause'
+//       audio.value?.play()
+//     }
+//   }
+// }
+
+// const tracksLength = computed(() => {
+//   return music.value?.length
+// })
+
+// provide(TrackKey, {
+//   audioText,
+//   tracksLength,
+//   music,
+// })
 </script>
 
 <style lang="scss" scoped></style>

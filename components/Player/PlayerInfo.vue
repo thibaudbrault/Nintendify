@@ -10,10 +10,6 @@
 import { inject } from 'vue'
 import { TrackKey } from '~/types/Symbols'
 
-type Props = {
-  music: any
-}
-
 const trackNb = useTrackNb()
 const { music } = inject(TrackKey)
 </script>
