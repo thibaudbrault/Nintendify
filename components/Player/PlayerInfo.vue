@@ -1,9 +1,9 @@
 <template>
   <div v-if="music" class="infoContainer">
-    <nuxt-img :src="music[trackNb].img" width="400" height="400" />
+    <!-- <nuxt-img :src="music[trackNb].img" width="400" height="400" /> -->
     <div>
       <h2>{{ music[trackNb].title }}</h2>
-      <h3>{{ music[trackNb].game }}</h3>
+      <!-- <h3>{{ music[trackNb].game }}</h3> -->
     </div>
   </div>
 </template>

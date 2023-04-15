@@ -43,7 +43,7 @@ aside {
     @apply flex flex-col gap-4;
 
     & a {
-      @apply text-3xl transition duration-300 hover:text-indigo-600 text-zinc-400;
+      @apply text-3xl transition duration-300 hover:text-indigo-500 text-zinc-400;
     }
 
     & .router-link-active {

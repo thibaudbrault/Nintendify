@@ -1,16 +1,25 @@
-export type TTrack = {
+export interface ITrack {
   audioText: string
   tracksLength: number
-  music: TMusic
+  music: IMusic
 }
 
-export type TMusic = {
+export interface IMusic extends ILicense {
   id: number
   created_at: string
   title: string
-  license: string
-  game: string
+  link: string
+  album_id: number
+}
+
+export interface ILicense {
+  id: number
+  created_at: string
+  name: string
+}
+
+export interface IAlbum extends ILicense {
   console: string
   img: string
-  link: string
+  license_id: string
 }

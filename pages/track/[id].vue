@@ -10,17 +10,17 @@
 <script setup lang="ts">
 import { provide } from 'vue'
 import { TrackKey } from '~/types/Symbols'
-import { TMusic } from '~/types/TrackTypes'
+import { IMusic } from '~/types/TrackTypes'
 
 const client = useSupabaseClient()
 const trackNb = useTrackNb()
 const audioText = ref<string>('iconoir:play')
-const curTrack = ref<TMusic | null>(null)
+const curTrack = ref<IMusic | null>(null)
 const audio = ref<HTMLAudioElement | null>(null)
 
 const { data: music, pending } = await useAsyncData(
-  'Musics',
-  async () => client.from('Musics').select('*').order('id'),
+  'musics',
+  async () => client.from('musics').select('*').order('id'),
   {
     transform: (result) => result.data,
   }
