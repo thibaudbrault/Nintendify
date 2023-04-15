@@ -6,7 +6,9 @@ export type TTrack = {
 
 export type TMusic = {
   id: number
+  created_at: string
   title: string
+  license: string
   game: string
   console: string
   img: string

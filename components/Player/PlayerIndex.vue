@@ -1,14 +1,9 @@
 <template>
   <!-- <PlayerNavbar /> -->
   <PlayerInfo />
-  <PlayerButtons @emit-play-pause="playPause" />
+  <PlayerButtons />
 </template>
 
-<script setup lang="ts">
-const props = defineProps<{
-  playPause: () => void
-}>()
-const { playPause } = toRefs(props)
-</script>
+<script setup lang="ts"></script>
 
 <style scoped></style>

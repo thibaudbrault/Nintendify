@@ -2,6 +2,10 @@
   <h2>Home</h2>
   <section>
     <HomeHighlight />
+    <HomeList />
+    <HomeList />
+    <HomeList />
+    <HomeList />
   </section>
 </template>
 
