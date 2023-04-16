@@ -11,6 +11,8 @@
 import { provide } from 'vue'
 import { TrackKey } from '~/types/Symbols'
 import { IMusic } from '~/types/TrackTypes'
+import { usePlayerStore } from '~/stores/usePlayerStore'
+import { storeToRefs } from 'pinia'
 
 const client = useSupabaseClient()
 const trackNb = useTrackNb()
@@ -26,6 +28,9 @@ const { data: music, pending } = await useAsyncData(
   }
 )
 
+const player = usePlayerStore()
+const { playPause, next } = storeToRefs(player)
+
 onMounted(() => {
   if (music.value) curTrack.value = music.value?.[trackNb.value]
   if (curTrack.value) {
@@ -37,15 +42,15 @@ onMounted(() => {
   }
 })
 
-const playPause = () => {
-  if (audio.value?.paused) {
-    audioText.value = 'iconoir:pause'
-    audio.value.play()
-  } else {
-    audioText.value = 'iconoir:play'
-    audio.value?.pause()
-  }
-}
+// const playPause = () => {
+//   if (audio.value?.paused) {
+//     audioText.value = 'iconoir:pause'
+//     audio.value.play()
+//   } else {
+//     audioText.value = 'iconoir:play'
+//     audio.value?.pause()
+//   }
+// }
 
 const resetPlayer = () => {
   if (audio.value) {
@@ -64,17 +69,17 @@ const previous = () => {
   resetPlayer()
 }
 
-const next = () => {
-  if (tracksLength.value) {
-    if (trackNb.value === tracksLength.value - 1) {
-      trackNb.value = tracksLength.value - 1
-    } else {
-      trackNb.value++
-    }
-  }
-  curTrack.value = music.value?.[trackNb.value]
-  resetPlayer()
-}
+// const next = () => {
+//   if (tracksLength.value) {
+//     if (trackNb.value === tracksLength.value - 1) {
+//       trackNb.value = tracksLength.value - 1
+//     } else {
+//       trackNb.value++
+//     }
+//   }
+//   curTrack.value = music.value?.[trackNb.value]
+//   resetPlayer()
+// }
 
 const tracksLength = computed(() => {
   return music.value?.length
