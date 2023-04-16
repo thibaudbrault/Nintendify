@@ -4,6 +4,12 @@ export interface ITrack {
   music: IMusic
 }
 
+export interface ILicense {
+  id: number
+  created_at: string
+  name: string
+}
+
 export interface IMusic extends ILicense {
   id: number
   created_at: string
@@ -12,14 +18,12 @@ export interface IMusic extends ILicense {
   album_id: number
 }
 
-export interface ILicense {
-  id: number
-  created_at: string
-  name: string
+export interface IAlbum extends ILicense {
+  image: string
+  license_id: string
+  console_id: string
 }
 
-export interface IAlbum extends ILicense {
-  console: string
-  img: string
-  license_id: string
+export interface IConsole extends ILicense {
+  fullName: string
 }
