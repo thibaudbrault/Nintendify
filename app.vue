@@ -6,11 +6,8 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="postcss" scoped>
 .wrapper {
-  height: 100vh;
-  width: 100vw;
-  background-color: $secondary;
-  color: $primary;
+  @apply grid grid-cols-[10vw_1fr] min-h-screen bg-zinc-900 text-zinc-100;
 }
 </style>

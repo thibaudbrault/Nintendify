@@ -1,26 +1,22 @@
 <template>
-  <main>
-    <!-- <Navbar /> -->
-    <Info :music="music" />
-    <PlayerButtons :audio="audio" :tracksLength="tracksLength" />
-  </main>
+  <HomeIndex />
 </template>
 
 <script setup lang="ts">
-let audio = ref<HTMLAudioElement | null>(null);
-let tracksLength = ref<number | null>(null);
-const trackNb = useTrackNb();
+import { ILicense } from '~/types/TrackTypes'
+import { provide } from 'vue'
 
-const { data: music } = await useFetch("/api/nes/SMB/musics", {
-  transform: (_music) => _music.data,
-});
+const client = useSupabaseClient()
 
-onMounted(() => {
-  if (music.value) {
-    tracksLength.value = music.value.length;
-    audio.value = new Audio(music.value[trackNb.value].link);
+const { data: license, pending } = await useAsyncData(
+  'license',
+  async () => client.from('license').select(`*, albums (*)`).order('id'),
+  {
+    transform: (result) => result.data as ILicense[],
   }
-});
+)
+
+provide('license', license)
 </script>
 
 <style lang="scss" scoped></style>
