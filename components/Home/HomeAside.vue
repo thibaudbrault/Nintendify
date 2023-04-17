@@ -35,7 +35,7 @@ console.log(albums.value)
 
 <style lang="postcss" scoped>
 aside {
-  @apply w-full flex flex-col gap-4;
+  @apply w-1/3 p-4 flex flex-col gap-4 absolute top-1/2 right-0 -translate-y-2/4 backdrop-blur-md;
 
   & h2 {
     @apply text-2xl capitalize font-semibold;
@@ -48,7 +48,7 @@ aside {
       & a {
         @apply flex gap-2 items-center;
         & img {
-          @apply h-12 w-12 object-cover rounded-xl;
+          @apply h-12 w-12 object-cover rounded-md;
         }
         & p {
           @apply font-semibold capitalize;

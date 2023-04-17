@@ -53,6 +53,6 @@ aside {
 }
 
 main {
-  @apply m-4 p-4 bg-zinc-100 text-zinc-900 rounded-3xl;
+  @apply m-4 bg-zinc-100 text-zinc-900 rounded-3xl;
 }
 </style>

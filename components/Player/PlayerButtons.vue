@@ -3,8 +3,11 @@
     <button @click="previous">
       <Icon name="iconoir:skip-prev" />
     </button>
-    <button @click="playPause">
-      <Icon :name="audioText" />
+    <button @click="playPause" v-if="isTrackPlaying">
+      <Icon name="iconoir:pause" />
+    </button>
+    <button @click="playPause" v-else>
+      <Icon name="iconoir:play" />
     </button>
     <button @click="next">
       <Icon name="iconoir:skip-next" />
@@ -15,7 +18,7 @@
 <script setup lang="ts">
 import { TrackKey } from '~/types/Symbols'
 
-const { audioText, playPause, previous, next } = inject(TrackKey)
+const { isTrackPlaying, playPause, previous, next } = inject(TrackKey)
 </script>
 
 <style lang="postcss" scoped>

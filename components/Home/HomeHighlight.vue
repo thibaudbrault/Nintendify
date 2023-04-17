@@ -8,6 +8,6 @@
 
 <style lang="postcss" scoped>
 img {
-  @apply w-full h-full col-span-2 object-cover rounded-3xl brightness-110 drop-shadow-md;
+  @apply w-full h-full col-span-2 object-cover brightness-110 rounded-t-3xl;
 }
 </style>

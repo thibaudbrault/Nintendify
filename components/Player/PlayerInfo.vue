@@ -1,10 +1,11 @@
 <template>
   <div v-if="music" class="infoContainer">
-    <!-- <nuxt-img :src="music[trackNb].img" width="400" height="400" /> -->
+    <nuxt-img :src="music[trackNb].albums.image" width="400" height="400" />
     <div>
       <h2>{{ music[trackNb].title }}</h2>
-      <!-- <h3>{{ music[trackNb].game }}</h3> -->
+      <h3>{{ music[trackNb].albums.name }}</h3>
     </div>
+    <p>{{ curTime }} / {{ duration }}</p>
   </div>
 </template>
 
@@ -13,7 +14,7 @@ import { inject } from 'vue'
 import { TrackKey } from '~/types/Symbols'
 
 const trackNb = useTrackNb()
-const { music } = inject(TrackKey)
+const { music, curTime, duration } = inject(TrackKey)
 </script>
 
 <style lang="postcss" scoped>
@@ -21,7 +22,7 @@ const { music } = inject(TrackKey)
   @apply flex items-center justify-center flex-col gap-4;
 
   & img {
-    @apply rounded-3xl;
+    @apply rounded-3xl w-96 h-96 object-cover;
   }
 
   & div {

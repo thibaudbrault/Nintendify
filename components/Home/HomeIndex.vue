@@ -1,12 +1,11 @@
 <template>
   <section>
-    <h1>Home</h1>
-    <div class="homeHighlight">
+    <div class="homeTop">
       <HomeHighlight />
       <HomeAside />
     </div>
-    <div class="homeList">
-      <HomeList v-for="l in license" :license="l" />
+    <div class="homeTable">
+      <HomeTable />
     </div>
   </section>
 </template>
@@ -21,16 +20,8 @@ const license = inject('license')
 section {
   @apply h-full flex flex-col gap-8;
 
-  & .homeHighlight {
-    @apply h-1/4 grid grid-cols-3 gap-4 justify-items-center;
+  & .homeTop {
+    @apply h-1/3 relative;
   }
-
-  & .homeList {
-    @apply flex flex-col gap-4;
-  }
-}
-
-h1 {
-  @apply text-4xl font-semibold mb-2 pl-2;
 }
 </style>
