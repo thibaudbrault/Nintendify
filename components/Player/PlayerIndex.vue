@@ -1,7 +1,7 @@
 <template>
   <PlayerInfo />
   <PlayerButtons />
-  <div>hello</div>
+  <PlayerFavorite />
 </template>
 
 <script setup lang="ts">

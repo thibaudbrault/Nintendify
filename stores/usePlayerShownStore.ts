@@ -10,5 +10,5 @@ export const usePlayerShownStore = defineStore('counter', () => {
     isShown.value = false
   }
 
-  return { isShown, showPlayer }
+  return { isShown, showPlayer, hidePlayer }
 })
