@@ -2,7 +2,7 @@
   <section>
     <div class="albumsHeader">
       <nuxt-img
-        :src="albums[Math.floor(Math.random() * albums?.length)].image"
+        :src="albums?.[Math.floor(Math.random() * albums?.length)].image"
       />
       <h1>Albums</h1>
     </div>
@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import type { Database } from '~/types/schema'
 
-const client = useSupabaseClient()
+const client = useSupabaseClient<Database>()
 
 const { data: albums, pending } = await useAsyncData(
   'albums',
@@ -27,7 +27,7 @@ const { data: albums, pending } = await useAsyncData(
       .select(`*, musics (*)`)
       .order('id', { foreignTable: 'musics' }),
   {
-    transform: (result) => result.data as IAlbum[],
+    transform: (result) => result.data,
   }
 )
 </script>

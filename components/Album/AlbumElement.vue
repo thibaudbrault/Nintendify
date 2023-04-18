@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import { IAlbum } from '~/types/trackTypes.js'
 
 const props = defineProps<{
   album: IAlbum

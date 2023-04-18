@@ -21,9 +21,9 @@ import { IAlbum } from '~/types/TrackTypes';
             <NuxtLink :to="`/album/${album.name}`">{{ album.name }}</NuxtLink>
           </div>
         </td>
-        <td>{{ album.consoles.name }}</td>
-        <td>{{ album.license.name }}</td>
-        <td>{{ album.musics.length }}</td>
+        <td>{{ album.consoles?.name }}</td>
+        <td>{{ album.license?.name }}</td>
+        <td>{{ album.musics?.length }}</td>
         <td>likes</td>
       </tr>
     </tbody>
@@ -31,9 +31,9 @@ import { IAlbum } from '~/types/TrackTypes';
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import type { Database } from '~/types/schema'
 
-const client = useSupabaseClient()
+const client = useSupabaseClient<Database>()
 
 const { data: albums, pending } = await useAsyncData(
   'albums',
@@ -43,7 +43,7 @@ const { data: albums, pending } = await useAsyncData(
       .select(`*, musics (*), license(*), consoles(*)`)
       .order('id'),
   {
-    transform: (result) => result.data as IAlbum[],
+    transform: (result) => result.data,
   }
 )
 
@@ -59,7 +59,7 @@ table {
   @apply w-11/12 my-0 mx-auto border-collapse text-center text-lg table-auto;
 
   & thead {
-    @apply text-zinc-500;
+    @apply text-zinc-400;
     & tr {
       & th {
         @apply py-4 font-semibold;

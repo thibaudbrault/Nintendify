@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { IMusic } from '~/types/TrackTypes'
+import { IMusic } from '~/types/trackTypes'
 
 export const usePlayerStore = defineStore('player', () => {
   const trackNb = useTrackNb()
