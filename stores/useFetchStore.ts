@@ -3,15 +3,13 @@ import { Database } from '~/types/schema'
 
 export const useFetchStore = defineStore('fetch', () => {
   const client = useSupabaseClient<Database>()
-  const musicsRef = ref(null)
-  const albums = ref(null)
-  const album = ref(null)
-  const fetchMusics = async () => {
+
+  const fetchMusics = async (title: string) => {
     const { data: musics, error } = await client
       .from('musics')
-      .select('*, albums(image, name)')
+      .select('*, albums!inner(image, name)')
+      .eq('albums.name', title)
       .order('id')
-    musicsRef.value = musics
     return musics
   }
   const fetchAlbum = async (title: string) => {
@@ -22,22 +20,7 @@ export const useFetchStore = defineStore('fetch', () => {
       .order('id', { foreignTable: 'musics' })
       .limit(1)
       .single()
-    album.value = album
+    return album
   }
-  return { musics, fetchMusics }
+  return { fetchMusics, fetchAlbum }
 })
-
-// const { data: album, pending } = await useAsyncData(
-//     'album',
-//     async () =>
-//       client
-//         .from('albums')
-//         .select('*, musics(*), license(name), consoles(name, fullName)')
-//         .eq('name', title)
-//         .order('id', { foreignTable: 'musics' })
-//         .limit(1)
-//         .single(),
-//     {
-//       transform: (result) => result.data,
-//     }
-//   )

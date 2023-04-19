@@ -7,14 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { provide, inject } from 'vue'
-import type { Database } from '~/types/schema'
-import { usePlayerStore } from '~/stores/usePlayerStore'
-import { storeToRefs } from 'pinia'
-
-const client = useSupabaseClient<Database>()
+import { provide } from 'vue'
+import { useFetchStore } from '~/stores/useFetchStore'
 
 const trackNb = useTrackNb()
+const selected = useSelected()
 
 const audio = ref<HTMLAudioElement | null>(null)
 const curTrack = ref(null)
@@ -23,22 +20,16 @@ const duration = ref<string | null>(null)
 const isTrackPlaying = ref<boolean>(false)
 const transitionName = ref<string | null>(null)
 
-// const title = useRoute().params.id
+const route = useRoute()
+const title = route.params.id
 
-const { data: music, pending } = await useAsyncData(
-  'musics',
-  async () =>
-    client.from('musics').select('*, albums(image, name)').order('id'),
-  {
-    transform: (result) => result.data,
-  }
+const musicsStore = useFetchStore()
+const { data: music, error } = await useAsyncData('music', () =>
+  musicsStore.fetchMusics(title as string)
 )
 
-// const player = usePlayerStore()
-// const { playPause, next } = storeToRefs(player)
-
 onMounted(() => {
-  if (music.value) curTrack.value = music.value?.[trackNb.value]
+  if (music.value) curTrack.value = music.value?.[selected.value]
   if (curTrack.value) {
     audio.value = new Audio()
     audio.value.src = curTrack.value.link

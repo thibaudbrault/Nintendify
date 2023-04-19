@@ -6,47 +6,39 @@
       <p>{{ album.consoles?.fullName }}</p>
     </div>
     <ul>
-      <li v-for="music in album.musics">
-        <button @click="showPlayer">{{ music.title }}</button>
+      <li v-for="(music, index) in album.musics">
+        <button @click="selectTrack(index)">{{ music.title }}</button>
       </li>
     </ul>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/types/schema'
-import { usePlayerShownStore } from '~/stores/usePlayerShownStore'
+import { useSelected } from '~/composables/useSelected'
 import { useFetchStore } from '~/stores/useFetchStore'
-import { storeToRefs } from 'pinia'
+import { usePlayerShownStore } from '~/stores/usePlayerShownStore'
 
 const route = useRoute()
 const title = route.params.id
 
-const dataStore = useFetchStore()
-const { data: musics, error } = await useAsyncData('musics', () =>
-  dataStore.fetchMusics()
+const selected = useSelected()
+
+const musicsStore = useFetchStore()
+const { data: album } = await useAsyncData('album', () =>
+  musicsStore.fetchAlbum(title as string)
 )
-console.log('musics: ', musics.value)
+
+const { data: music } = await useAsyncData('music', () =>
+  musicsStore.fetchMusics(title as string)
+)
 
 const store = usePlayerShownStore()
 const { showPlayer } = store
 
-const client = useSupabaseClient<Database>()
-
-const { data: album, pending } = await useAsyncData(
-  'album',
-  async () =>
-    client
-      .from('albums')
-      .select('*, musics(*), license(name), consoles(name, fullName)')
-      .eq('name', title)
-      .order('id', { foreignTable: 'musics' })
-      .limit(1)
-      .single(),
-  {
-    transform: (result) => result.data,
-  }
-)
+const selectTrack = (id: number) => {
+  showPlayer()
+  selected.value = id
+}
 </script>
 
 <style lang="postcss" scoped>
@@ -56,7 +48,7 @@ section {
   & .albumHeader {
     @apply flex flex-col items-center gap-4;
     & img {
-      @apply w-52 h-52 rounded-md;
+      @apply w-52 h-52 rounded-md object-cover;
     }
 
     & h1 {
