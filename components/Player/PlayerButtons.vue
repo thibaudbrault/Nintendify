@@ -41,8 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import { TrackKey } from '~/types/symbols.js'
-
 const {
   isTrackPlaying,
   playPause,
@@ -52,7 +50,7 @@ const {
   forward,
   curTime,
   duration,
-} = inject(TrackKey)
+} = inject('track')
 </script>
 
 <style lang="postcss" scoped>

@@ -10,10 +10,9 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
-import { TrackKey } from '~/types/symbols.js'
 
 const trackNb = useTrackNb()
-const { music } = inject(TrackKey)
+const { music } = inject('track')
 </script>
 
 <style lang="postcss" scoped>
