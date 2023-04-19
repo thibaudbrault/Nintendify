@@ -16,9 +16,17 @@
 <script setup lang="ts">
 import type { Database } from '~/types/schema'
 import { usePlayerShownStore } from '~/stores/usePlayerShownStore'
+import { useFetchStore } from '~/stores/useFetchStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const title = route.params.id
+
+const dataStore = useFetchStore()
+const { data: musics, error } = await useAsyncData('musics', () =>
+  dataStore.fetchMusics()
+)
+console.log('musics: ', musics.value)
 
 const store = usePlayerShownStore()
 const { showPlayer } = store
@@ -39,8 +47,6 @@ const { data: album, pending } = await useAsyncData(
     transform: (result) => result.data,
   }
 )
-
-console.log(album.value)
 </script>
 
 <style lang="postcss" scoped>

@@ -1,12 +1,13 @@
 <template>
-  <PlayerInfo />
-  <PlayerButtons />
-  <PlayerFavorite />
+  <TransitionGroup :name="transitionName">
+    <PlayerInfo key="info" />
+    <PlayerButtons key="buttons" />
+    <PlayerFavorite key="favorite" />
+  </TransitionGroup>
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue'
-import { TrackKey } from '~/types/symbols.js'
+import { provide, inject } from 'vue'
 import type { Database } from '~/types/schema'
 import { usePlayerStore } from '~/stores/usePlayerStore'
 import { storeToRefs } from 'pinia'
@@ -16,10 +17,11 @@ const client = useSupabaseClient<Database>()
 const trackNb = useTrackNb()
 
 const audio = ref<HTMLAudioElement | null>(null)
-const curTrack = ref<IMusic | null>(null)
+const curTrack = ref(null)
 const curTime = ref<string | number | null>(null)
 const duration = ref<string | null>(null)
 const isTrackPlaying = ref<boolean>(false)
+const transitionName = ref<string | null>(null)
 
 // const title = useRoute().params.id
 
@@ -81,15 +83,16 @@ const calculateTime = () => {
   if (audio.value) {
     curTime.value = audio.value?.currentTime
     if (curTime.value) {
-      const minutes = Math.floor(curTime.value / 60)
-      const seconds = Math.floor(curTime.value % 60)
-      const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`
-      const totalMinutes = Math.floor(audio.value?.duration / 60)
-      const totalSeconds = Math.floor(audio.value?.duration % 60)
-      const totalReturnedSeconds =
-        totalSeconds < 10 ? `0${totalSeconds}` : `${totalSeconds}`
-      curTime.value = `${minutes}:${returnedSeconds}`
-      duration.value = `${totalMinutes}:${totalReturnedSeconds}`
+      const curMinutes = Math.floor(curTime.value / 60)
+      const curSeconds = Math.floor(curTime.value % 60)
+      const curReturnedSeconds =
+        curSeconds < 10 ? `0${curSeconds}` : `${curSeconds}`
+      const durMinutes = Math.floor(audio.value?.duration / 60)
+      const durSeconds = Math.floor(audio.value?.duration % 60)
+      const durReturnedSeconds =
+        durSeconds < 10 ? `0${durSeconds}` : `${durSeconds}`
+      curTime.value = `${curMinutes}:${curReturnedSeconds}`
+      duration.value = `${durMinutes}:${durReturnedSeconds}`
     }
   }
 }
@@ -98,6 +101,7 @@ const previous = () => {
   if (trackNb.value === 0) {
     trackNb.value = 0
   } else {
+    transitionName.value = 'slide-right'
     trackNb.value--
   }
   curTrack.value = music.value?.[trackNb.value]
@@ -109,6 +113,7 @@ const next = () => {
     if (trackNb.value === tracksLength.value - 1) {
       trackNb.value = tracksLength.value - 1
     } else {
+      transitionName.value = 'slide-left'
       trackNb.value++
     }
   }
@@ -132,7 +137,7 @@ const tracksLength = computed(() => {
   return music.value?.length
 })
 
-provide(TrackKey, {
+provide('track', {
   isTrackPlaying,
   tracksLength,
   curTime,
@@ -146,4 +151,34 @@ provide(TrackKey, {
 })
 </script>
 
-<style scoped></style>
+<style lang="postcss" scoped>
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(300px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-300px);
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(300px);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(-300px);
+}
+</style>

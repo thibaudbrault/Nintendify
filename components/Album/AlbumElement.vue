@@ -18,8 +18,6 @@ const props = defineProps<{
   album: IAlbum
 }>()
 const { album } = toRefs(props)
-
-console.log(album)
 </script>
 
 <style lang="postcss" scoped>

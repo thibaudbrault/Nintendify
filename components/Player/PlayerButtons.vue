@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { ITrackInject } from '~/types/injects'
+
 const {
   isTrackPlaying,
   playPause,
@@ -50,7 +52,7 @@ const {
   forward,
   curTime,
   duration,
-} = inject('track')
+} = inject<ITrackInject | undefined>('track')
 </script>
 
 <style lang="postcss" scoped>
