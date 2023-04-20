@@ -1,3 +1,3 @@
 export const useSelected = () => {
-  return useState<number | null>('selected', () => null)
+  return useState<number>('selected', () => 0)
 }

@@ -15,7 +15,7 @@
           <Icon
             class="buttonIcon"
             name="game-icons:pause-button"
-            v-if="isTrackPlaying"
+            v-if="isPlaying"
           />
           <Icon class="buttonIcon" name="game-icons:play-button" v-else />
         </Transition>
@@ -42,17 +42,14 @@
 
 <script setup lang="ts">
 import { ITrackInject } from '~/types/injects'
+import { useTrackStore } from '~/stores/useTrackStore'
+import { storeToRefs } from 'pinia'
 
-const {
-  isTrackPlaying,
-  playPause,
-  previous,
-  next,
-  backward,
-  forward,
-  curTime,
-  duration,
-} = inject<ITrackInject | undefined>('track')
+const useTrack = useTrackStore()
+const { curTime, duration, isPlaying } = storeToRefs(useTrack)
+const { playPause, backward, forward } = useTrack
+
+const { previous, next } = inject<ITrackInject | undefined>('track')
 </script>
 
 <style lang="postcss" scoped>

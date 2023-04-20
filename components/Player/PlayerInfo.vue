@@ -1,9 +1,9 @@
 <template>
   <section v-if="music" class="infoContainer">
-    <nuxt-img :src="music[trackNb].albums.image" width="40" height="40" />
+    <nuxt-img :src="music[selected].albums.image" width="40" height="40" />
     <div>
-      <h2>{{ music[trackNb].title }}</h2>
-      <h3>{{ music[trackNb].albums.name }}</h3>
+      <h2>{{ music[selected].title }}</h2>
+      <h3>{{ music[selected].albums.name }}</h3>
     </div>
   </section>
 </template>
@@ -11,7 +11,8 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 
-const trackNb = useTrackNb()
+const selected = useSelected()
+
 const { music } = inject('track')
 </script>
 

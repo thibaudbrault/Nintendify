@@ -6,39 +6,23 @@
       <p>{{ album.consoles?.fullName }}</p>
     </div>
     <ul>
-      <li v-for="(music, index) in album.musics">
-        <button @click="selectTrack(index)">{{ music.title }}</button>
+      <li v-for="(music, index) in album.musics" :key="music.title">
+        <AlbumTrackRow :music="music" :index="index" :album="title" />
       </li>
     </ul>
   </section>
 </template>
 
 <script setup lang="ts">
-import { useSelected } from '~/composables/useSelected'
 import { useFetchStore } from '~/stores/useFetchStore'
-import { usePlayerShownStore } from '~/stores/usePlayerShownStore'
 
 const route = useRoute()
 const title = route.params.id
-
-const selected = useSelected()
 
 const musicsStore = useFetchStore()
 const { data: album } = await useAsyncData('album', () =>
   musicsStore.fetchAlbum(title as string)
 )
-
-const { data: music } = await useAsyncData('music', () =>
-  musicsStore.fetchMusics(title as string)
-)
-
-const store = usePlayerShownStore()
-const { showPlayer } = store
-
-const selectTrack = (id: number) => {
-  showPlayer()
-  selected.value = id
-}
 </script>
 
 <style lang="postcss" scoped>

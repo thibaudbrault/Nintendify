@@ -7,14 +7,14 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { provide } from 'vue'
 import { useFetchStore } from '~/stores/useFetchStore'
+import { useTrackStore } from '~/stores/useTrackStore'
 
 const trackNb = useTrackNb()
 const selected = useSelected()
 
-const audio = ref<HTMLAudioElement | null>(null)
-const curTrack = ref(null)
 const curTime = ref<string | number | null>(null)
 const duration = ref<string | null>(null)
 const isTrackPlaying = ref<boolean>(false)
@@ -24,37 +24,34 @@ const route = useRoute()
 const title = route.params.id
 
 const musicsStore = useFetchStore()
-const { data: music, error } = await useAsyncData('music', () =>
+const { data: music } = await useAsyncData('music', () =>
   musicsStore.fetchMusics(title as string)
 )
 
-onMounted(() => {
-  if (music.value) curTrack.value = music.value?.[selected.value]
-  if (curTrack.value) {
-    audio.value = new Audio()
-    audio.value.src = curTrack.value.link
-    audio.value.onended = () => {
-      next()
-      isTrackPlaying.value = true
-    }
-    audio.value.onloadedmetadata = () => {
-      calculateTime()
-    }
-    audio.value.ontimeupdate = () => {
-      calculateTime()
-    }
-  }
-})
+const useTrack = useTrackStore()
+const { isPlaying, audio, curTrack } = storeToRefs(useTrack)
+const { loadTrack } = useTrack
 
-const playPause = () => {
-  if (audio.value?.paused) {
-    audio.value.play()
-    isTrackPlaying.value = true
-  } else {
-    audio.value?.pause()
-    isTrackPlaying.value = false
+watchEffect(() => {
+  if (music.value) {
+    loadTrack(music.value[selected.value])
   }
-}
+  // if (music.value) curTrack.value = music.value?.[selected.value]
+  // if (curTrack.value) {
+  //   audio.value = new Audio()
+  //   audio.value.src = curTrack.value.link
+  //   audio.value.onended = () => {
+  //     next()
+  //     isTrackPlaying.value = true
+  //   }
+  //   audio.value.onloadedmetadata = () => {
+  //     calculateTime()
+  //   }
+  //   audio.value.ontimeupdate = () => {
+  //     calculateTime()
+  //   }
+  // }
+})
 
 const resetPlayer = () => {
   if (audio.value) {
@@ -129,16 +126,7 @@ const tracksLength = computed(() => {
 })
 
 provide('track', {
-  isTrackPlaying,
-  tracksLength,
-  curTime,
-  duration,
   music,
-  playPause,
-  previous,
-  next,
-  backward,
-  forward,
 })
 </script>
 

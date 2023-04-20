@@ -32,14 +32,14 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { usePlayerShownStore } from '~/stores/usePlayerShownStore'
+import { usePlayerStore } from '~/stores/usePlayerStore.js'
 
 const homeIcon = ref<string>('iconoir:home')
 const albumIcon = ref<string>('iconoir:album-open')
 const favIcon = ref<string>('iconoir:heart')
 const userIcon = ref<string>('iconoir:user')
 
-const store = usePlayerShownStore()
+const store = usePlayerStore()
 const { isShown } = storeToRefs(store)
 </script>
 
