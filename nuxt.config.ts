@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'nuxt-icon',
     '@nuxtjs/supabase',
+    '@pinia/nuxt',
   ],
   typescript: {
     strict: true,

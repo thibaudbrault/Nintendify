@@ -1,24 +1,33 @@
 <template>
   <section>
-    <h1>Albums</h1>
-    <ul>
-      <li v-for="album in albums">
+    <div class="albumsHeader">
+      <nuxt-img
+        :src="albums?.[Math.floor(Math.random() * albums?.length)].image"
+      />
+      <h1>Albums</h1>
+    </div>
+    <div class="albumsList">
+      <details v-for="album in albums">
         <AlbumElement :album="album" />
-      </li>
-    </ul>
+      </details>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import type { Database } from '~/types/schema'
 
-const client = useSupabaseClient()
+const client = useSupabaseClient<Database>()
 
 const { data: albums, pending } = await useAsyncData(
   'albums',
-  async () => client.from('albums').select(`*, musics (*)`).order('id'),
+  async () =>
+    client
+      .from('albums')
+      .select(`*, musics (*)`)
+      .order('id', { foreignTable: 'musics' }),
   {
-    transform: (result) => result.data as IAlbum[],
+    transform: (result) => result.data,
   }
 )
 </script>
@@ -27,15 +36,21 @@ const { data: albums, pending } = await useAsyncData(
 section {
   @apply p-4 flex flex-col gap-8;
 
-  & h1 {
-    @apply text-6xl text-indigo-700 font-semibold;
+  & .albumsHeader {
+    @apply flex items-baseline gap-4;
+    & h1 {
+      @apply text-6xl text-indigo-700 font-semibold;
+    }
+    & img {
+      @apply w-14 h-14 rounded-xl;
+    }
   }
 
-  & ul {
-    @apply flex items-center justify-between flex-wrap gap-4;
+  & .albumsList {
+    @apply flex flex-col gap-4;
 
-    & li {
-      @apply bg-zinc-200 w-fit px-2 py-8 rounded-3xl transition duration-300 hover:scale-105;
+    & details {
+      @apply bg-zinc-200 w-full;
     }
   }
 }

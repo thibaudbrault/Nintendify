@@ -1,30 +1,34 @@
 <template>
-  <NuxtLink :to="`/album/${album.name}`">
-    <nuxt-img :src="album.image" width="125" height="125" />
-    <h2>{{ album.name }}</h2>
-  </NuxtLink>
+  <summary>
+    {{ album.name }}
+  </summary>
+  <ul>
+    <li v-for="music in album.musics">
+      <NuxtLink :to="`/track/${music.title}`">
+        {{ music.title }}
+      </NuxtLink>
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import { IAlbum } from '~/types/trackTypes.js'
 
 const props = defineProps<{
   album: IAlbum
 }>()
 const { album } = toRefs(props)
-
-console.log(album.value)
 </script>
 
 <style lang="postcss" scoped>
-a {
-  @apply flex flex-col items-center justify-between gap-4;
-  & img {
-    @apply rounded-3xl w-32 h-32 object-cover;
-  }
+summary {
+  @apply text-2xl font-semibold capitalize cursor-pointer;
+}
 
-  & h2 {
-    @apply text-xl capitalize;
+ul {
+  @apply py-2;
+  & li {
+    @apply py-1 px-2 capitalize;
   }
 }
 </style>

@@ -22,13 +22,25 @@
   <main>
     <slot />
   </main>
+
+  <Transition name="fade">
+    <footer v-if="isShown">
+      <PlayerIndex />
+    </footer>
+  </Transition>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { usePlayerStore } from '~/stores/usePlayerStore.js'
+
 const homeIcon = ref<string>('iconoir:home')
 const albumIcon = ref<string>('iconoir:album-open')
 const favIcon = ref<string>('iconoir:heart')
 const userIcon = ref<string>('iconoir:user')
+
+const store = usePlayerStore()
+const { isShown } = storeToRefs(store)
 </script>
 
 <style lang="postcss" scoped>
@@ -53,6 +65,20 @@ aside {
 }
 
 main {
-  @apply m-4 p-4 bg-zinc-100 text-zinc-900 rounded-3xl;
+  @apply m-4 bg-zinc-700 text-zinc-100 rounded-3xl;
+}
+
+footer {
+  @apply w-full h-fit absolute bottom-0 left-0 p-4 grid grid-cols-[1fr_2fr_1fr] items-center backdrop-blur-xl gap-4;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

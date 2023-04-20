@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-import { IAlbum } from '~/types/TrackTypes'
+import type { Database } from '~/types/schema'
 
-const client = useSupabaseClient()
+const client = useSupabaseClient<Database>()
 
 const { data: albums, pending } = await useAsyncData(
   'albums',
@@ -26,16 +26,14 @@ const { data: albums, pending } = await useAsyncData(
       .order('created_at', { ascending: false })
       .limit(3),
   {
-    transform: (result) => result.data as IAlbum[],
+    transform: (result) => result.data,
   }
 )
-
-console.log(albums.value)
 </script>
 
 <style lang="postcss" scoped>
 aside {
-  @apply w-full flex flex-col gap-4;
+  @apply w-1/3 p-4 flex flex-col gap-4 absolute top-1/2 right-0 -translate-y-2/4 backdrop-blur-md text-zinc-900;
 
   & h2 {
     @apply text-2xl capitalize font-semibold;
@@ -48,7 +46,7 @@ aside {
       & a {
         @apply flex gap-2 items-center;
         & img {
-          @apply h-12 w-12 object-cover rounded-xl;
+          @apply h-12 w-12 object-cover rounded-md;
         }
         & p {
           @apply font-semibold capitalize;
