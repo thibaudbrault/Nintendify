@@ -1,34 +1,24 @@
 <template>
   <section>
     <div class="albumsHeader">
-      <nuxt-img
-        :src="albums?.[Math.floor(Math.random() * albums?.length)].image"
-      />
       <h1>Albums</h1>
     </div>
-    <div class="albumsList">
-      <details v-for="album in albums">
-        <AlbumElement :album="album" />
-      </details>
-    </div>
+    <ul class="albumsList">
+      <li v-for="album in albums">
+        <NuxtLink :to="`/album/${album.name}`">
+          {{ album.name }}
+        </NuxtLink>
+      </li>
+    </ul>
   </section>
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/types/schema'
+import { useFetchStore } from '~/stores/useFetchStore'
 
-const client = useSupabaseClient<Database>()
-
-const { data: albums, pending } = await useAsyncData(
-  'albums',
-  async () =>
-    client
-      .from('albums')
-      .select(`*, musics (*)`)
-      .order('id', { foreignTable: 'musics' }),
-  {
-    transform: (result) => result.data,
-  }
+const musicsStore = useFetchStore()
+const { data: albums } = await useAsyncData('albums', () =>
+  musicsStore.fetchAlbums()
 )
 </script>
 
@@ -39,19 +29,12 @@ section {
   & .albumsHeader {
     @apply flex items-baseline gap-4;
     & h1 {
-      @apply text-6xl text-indigo-700 font-semibold;
-    }
-    & img {
-      @apply w-14 h-14 rounded-xl;
+      @apply text-6xl text-red-500 font-semibold;
     }
   }
 
   & .albumsList {
-    @apply flex flex-col gap-4;
-
-    & details {
-      @apply bg-zinc-200 w-full;
-    }
+    @apply flex gap-4;
   }
 }
 </style>
