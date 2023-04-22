@@ -5,7 +5,7 @@ export const useFetchStore = defineStore('fetch', () => {
   const client = useSupabaseClient<Database>()
 
   const fetchMusics = async (title: string) => {
-    const { data: musics, error } = await client
+    const { data: musics } = await client
       .from('musics')
       .select('*, albums!inner(image, name)')
       .eq('albums.name', title)
@@ -13,7 +13,7 @@ export const useFetchStore = defineStore('fetch', () => {
     return musics
   }
   const fetchAlbum = async (title: string) => {
-    const { data: album, error } = await client
+    const { data: album } = await client
       .from('albums')
       .select('*, musics(*), license(name), consoles(name, fullName)')
       .eq('name', title)
@@ -22,5 +22,11 @@ export const useFetchStore = defineStore('fetch', () => {
       .single()
     return album
   }
-  return { fetchMusics, fetchAlbum }
+
+  const fetchAlbums = async () => {
+    const { data: albums } = await client.from('albums').select(`*`).order('id')
+    return albums
+  }
+
+  return { fetchMusics, fetchAlbum, fetchAlbums }
 })
