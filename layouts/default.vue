@@ -1,21 +1,23 @@
 <template>
   <aside>
-    <div>
-      <NuxtLink to="/" title="Home">
-        <Icon :name="homeIcon" />
-      </NuxtLink>
-      <NuxtLink to="/album" title="Albums">
-        <Icon :name="albumIcon" />
-      </NuxtLink>
-    </div>
-    <hr />
-    <div>
-      <NuxtLink to="/favorites" title="Favorites">
-        <Icon :name="favIcon" />
-      </NuxtLink>
-      <NuxtLink to="/profile" title="Profile">
-        <Icon :name="userIcon" />
-      </NuxtLink>
+    <div class="linksContainer">
+      <div>
+        <NuxtLink to="/" title="Home">
+          <Icon :name="homeIcon" />
+        </NuxtLink>
+        <NuxtLink to="/album" title="Albums">
+          <Icon :name="albumIcon" />
+        </NuxtLink>
+      </div>
+      <hr />
+      <div>
+        <NuxtLink to="/favorites" title="Favorites">
+          <Icon :name="favIcon" />
+        </NuxtLink>
+        <NuxtLink to="/profile" title="Profile">
+          <Icon :name="userIcon" />
+        </NuxtLink>
+      </div>
     </div>
   </aside>
 
@@ -45,31 +47,33 @@ const { isShown } = storeToRefs(store)
 
 <style lang="postcss" scoped>
 aside {
-  @apply flex flex-col justify-center items-center gap-16;
-
-  & hr {
-    @apply bg-zinc-600 w-1/2 h-px;
-  }
-
-  & div {
-    @apply flex flex-col gap-4;
-
-    & a {
-      @apply text-3xl transition duration-300 hover:text-indigo-500 text-zinc-400;
+  @apply w-full h-full relative;
+  & .linksContainer {
+    @apply sticky top-1/2 -translate-y-1/2 flex flex-col justify-center items-center gap-16;
+    & hr {
+      @apply bg-stone-600 w-1/2 h-px;
     }
 
-    & .router-link-active {
-      @apply text-zinc-50;
+    & div {
+      @apply flex flex-col gap-4;
+
+      & a {
+        @apply text-3xl transition duration-300 hover:text-red-500 text-stone-400;
+      }
+
+      & .router-link-active {
+        @apply text-stone-50;
+      }
     }
   }
 }
 
 main {
-  @apply m-4 bg-zinc-700 text-zinc-100 rounded-3xl;
+  @apply m-4 ml-0 bg-stone-800 text-stone-100 rounded-3xl;
 }
 
 footer {
-  @apply w-full h-fit absolute bottom-0 left-0 p-4 grid grid-cols-[1fr_2fr_1fr] items-center backdrop-blur-xl gap-4;
+  @apply w-full h-fit fixed bottom-0 left-0 p-4 grid grid-cols-[1fr_2fr_1fr] items-center backdrop-blur-xl gap-4 border-t border-t-stone-600;
 }
 
 .fade-enter-active,
