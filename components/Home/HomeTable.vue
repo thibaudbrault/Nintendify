@@ -21,7 +21,9 @@ import { IAlbum } from '~/types/TrackTypes';
             <NuxtLink :to="`/album/${album.name}`">{{ album.name }}</NuxtLink>
           </div>
         </td>
-        <td>{{ album.consoles?.name }}</td>
+        <td>
+          {{ album.consoles?.name.replace('other', '/') }}
+        </td>
         <td>{{ album.license?.name }}</td>
         <td>{{ album.musics?.length }}</td>
         <td>likes</td>
@@ -46,8 +48,6 @@ const { data: albums, pending } = await useAsyncData(
     transform: (result) => result.data,
   }
 )
-
-console.log(albums.value)
 </script>
 
 <style lang="postcss" scoped>
@@ -59,7 +59,7 @@ table {
   @apply w-11/12 my-0 mx-auto border-collapse text-center text-lg table-auto;
 
   & thead {
-    @apply text-zinc-400;
+    @apply text-stone-400;
     & tr {
       & th {
         @apply py-4 font-semibold;
@@ -87,7 +87,7 @@ table {
   }
 
   & tr {
-    @apply border-b border-zinc-500;
+    @apply border-b border-stone-500;
   }
 }
 </style>

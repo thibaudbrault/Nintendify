@@ -15,12 +15,12 @@ const usePlayer = usePlayerStore()
 const { hidePlayer } = usePlayer
 
 const useTrack = useTrackStore()
-
-const { isPlaying, audio, curTrack } = storeToRefs(useTrack)
+const { isPlaying, audio } = storeToRefs(useTrack)
 
 const exitPlayer = () => {
   hidePlayer()
   audio.value?.pause()
+  isPlaying.value = false
 }
 </script>
 

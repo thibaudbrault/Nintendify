@@ -20,8 +20,6 @@
           <Icon class="buttonIcon" name="game-icons:play-button" v-else />
         </Transition>
       </button>
-      <!-- <button class="playButton" @click="playPause" v-else title="play">
-          </button> -->
       <button @click="forward" title="Forward 10s">
         <Icon name="game-icons:fast-forward-button" />
       </button>
@@ -62,7 +60,7 @@ section {
       @apply text-2xl;
     }
     & .playButton {
-      @apply relative w-16 h-16 flex justify-center items-center text-4xl bg-zinc-900 text-zinc-100 rounded-full;
+      @apply relative w-16 h-16 flex justify-center items-center text-4xl bg-stone-950 rounded-full;
 
       & .buttonIcon {
         @apply absolute;
@@ -74,7 +72,7 @@ section {
     @apply w-full flex items-center justify-center gap-2;
 
     & div {
-      @apply h-3 w-9/12 bg-zinc-100 rounded-3xl;
+      @apply h-3 w-9/12 bg-stone-100 rounded-3xl;
     }
   }
 }

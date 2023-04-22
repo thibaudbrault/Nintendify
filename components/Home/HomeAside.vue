@@ -33,7 +33,7 @@ const { data: albums, pending } = await useAsyncData(
 
 <style lang="postcss" scoped>
 aside {
-  @apply w-1/3 p-4 flex flex-col gap-4 absolute top-1/2 right-0 -translate-y-2/4 backdrop-blur-md text-zinc-900;
+  @apply w-1/3 p-4 flex flex-col gap-4 absolute top-1/2 right-0 -translate-y-2/4 backdrop-blur-md text-stone-950;
 
   & h2 {
     @apply text-2xl capitalize font-semibold;
@@ -42,7 +42,7 @@ aside {
   & ol {
     @apply flex flex-col gap-2;
     & li {
-      @apply bg-zinc-200 p-2 rounded-xl;
+      @apply bg-stone-200 p-2 rounded-xl transition duration-300 hover:bg-stone-950 hover:text-stone-200;
       & a {
         @apply flex gap-2 items-center;
         & img {

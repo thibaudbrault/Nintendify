@@ -18,12 +18,16 @@ export const useTrackStore = defineStore('track', () => {
       audio.value.src = ''
     }
     audio.value = new Audio()
-    audio.value.src = track.link
-    // audio.value.onended = () => {
-    //   next(curTrack.value)
-    //   isPlaying.value = true
-    // }
+    audio.value.src = curTrack.value?.link
+    setTimeout(() => {
+      audio.value?.play()
+    }, 300)
+    audio.value.onended = () => {
+      next(curTrack.value)
+      isPlaying.value = true
+    }
     audio.value.onloadedmetadata = () => {
+      isPlaying.value = true
       calculateTime()
     }
     audio.value.ontimeupdate = () => {
@@ -41,21 +45,20 @@ export const useTrackStore = defineStore('track', () => {
     }
   }
 
+  const playPauseTrack = (track) => {
+    if (!audio || !audio.value?.src) {
+      loadTrack(track)
+    }
+  }
+
   const calculateTime = () => {
     if (audio.value) {
-      curTime.value = audio.value?.currentTime
-      if (curTime.value) {
-        const curMinutes = Math.floor(curTime.value / 60)
-        const curSeconds = Math.floor(curTime.value % 60)
-        const curReturnedSeconds =
-          curSeconds < 10 ? `0${curSeconds}` : `${curSeconds}`
-        const durMinutes = Math.floor(audio.value?.duration / 60)
-        const durSeconds = Math.floor(audio.value?.duration % 60)
-        const durReturnedSeconds =
-          durSeconds < 10 ? `0${durSeconds}` : `${durSeconds}`
-        curTime.value = `${curMinutes}:${curReturnedSeconds}`
-        duration.value = `${durMinutes}:${durReturnedSeconds}`
-      }
+      const curMinutes = Math.floor(audio.value.currentTime / 60)
+      const curSeconds = Math.floor(audio.value.currentTime % 60)
+      const durMinutes = Math.floor(audio.value?.duration / 60)
+      const durSeconds = Math.floor(audio.value?.duration % 60)
+      curTime.value = curMinutes + ':' + curSeconds.toString().padStart(2, '0')
+      duration.value = durMinutes + ':' + durSeconds.toString().padStart(2, '0')
     }
   }
 
@@ -100,6 +103,7 @@ export const useTrackStore = defineStore('track', () => {
     loadTrack,
     calculateTime,
     playPause,
+    playPauseTrack,
     previous,
     next,
     backward,
