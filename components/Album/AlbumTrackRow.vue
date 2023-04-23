@@ -18,9 +18,18 @@ import { usePlayerStore } from '~/stores/usePlayerStore.js'
 import { useTrackStore } from '~/stores/useTrackStore'
 
 const props = defineProps({
-  music: Object,
-  index: Number,
-  album: String,
+  music: {
+    type: Object,
+    required: true,
+  },
+  index: {
+    type: Number,
+    required: true,
+  },
+  album: {
+    type: String,
+    required: true,
+  },
 })
 const { music, index } = toRefs(props)
 

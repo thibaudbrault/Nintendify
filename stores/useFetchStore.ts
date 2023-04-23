@@ -12,6 +12,15 @@ export const useFetchStore = defineStore('fetch', () => {
       .order('id')
     return musics
   }
+
+  const fetchLicenses = async () => {
+    const { data: license } = await client
+      .from('license')
+      .select(`*`)
+      .order('id')
+    return license
+  }
+
   const fetchAlbum = async (title: string) => {
     const { data: album } = await client
       .from('albums')
@@ -28,5 +37,29 @@ export const useFetchStore = defineStore('fetch', () => {
     return albums
   }
 
-  return { fetchMusics, fetchAlbum, fetchAlbums }
+  const fetchAlbumsFull = async () => {
+    const { data: albums } = await client
+      .from('albums')
+      .select(`*, musics (id), license(*), consoles(*)`)
+      .order('id')
+    return albums
+  }
+
+  const fetchAlbumsWithLimit = async () => {
+    const { data: albums } = await client
+      .from('albums')
+      .select(`*`)
+      .order('id', { ascending: false })
+      .limit(3)
+    return albums
+  }
+
+  return {
+    fetchMusics,
+    fetchLicenses,
+    fetchAlbum,
+    fetchAlbums,
+    fetchAlbumsFull,
+    fetchAlbumsWithLimit,
+  }
 })

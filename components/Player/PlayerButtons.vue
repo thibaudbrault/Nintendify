@@ -4,26 +4,26 @@
       <button title="Shuffle">
         <Icon name="game-icons:perspective-dice-six-faces-random" />
       </button>
-      <button @click="previous" title="Previous">
+      <button title="Previous" @click="previous(music[selected - 1])">
         <Icon name="game-icons:previous-button" />
       </button>
-      <button @click="backward" title="Backwrad 10s">
+      <button title="Backwrad 10s" @click="backward">
         <Icon name="game-icons:fast-backward-button" />
       </button>
-      <button class="playButton" @click="playPause" title="Pause">
+      <button class="playButton" title="Pause" @click="playPause">
         <Transition name="slide-up">
           <Icon
+            v-if="isPlaying"
             class="buttonIcon"
             name="game-icons:pause-button"
-            v-if="isPlaying"
           />
-          <Icon class="buttonIcon" name="game-icons:play-button" v-else />
+          <Icon v-else class="buttonIcon" name="game-icons:play-button" />
         </Transition>
       </button>
-      <button @click="forward" title="Forward 10s">
+      <button title="Forward 10s" @click="forward">
         <Icon name="game-icons:fast-forward-button" />
       </button>
-      <button @click="next" title="Next">
+      <button title="Next" @click="next(music[selected + 1])">
         <Icon name="game-icons:next-button" />
       </button>
       <button title="Loop">
@@ -39,15 +39,17 @@
 </template>
 
 <script setup lang="ts">
-import { ITrackInject } from '~/types/injects'
-import { useTrackStore } from '~/stores/useTrackStore'
+import { inject } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useTrackStore } from '~/stores/useTrackStore'
 
 const useTrack = useTrackStore()
 const { curTime, duration, isPlaying } = storeToRefs(useTrack)
-const { playPause, backward, forward } = useTrack
+const { playPause, backward, forward, previous, next } = useTrack
 
-const { previous, next } = inject<ITrackInject | undefined>('track')
+const selected = useSelected()
+
+const { music } = inject('track')
 </script>
 
 <style lang="postcss" scoped>

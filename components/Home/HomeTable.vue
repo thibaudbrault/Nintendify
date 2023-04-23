@@ -13,7 +13,7 @@ import { IAlbum } from '~/types/TrackTypes';
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(album, index) in albums">
+      <tr v-for="(album, index) in albums" :key="album.name">
         <td>{{ index + 1 }}</td>
         <td>
           <div>
@@ -33,26 +33,17 @@ import { IAlbum } from '~/types/TrackTypes';
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/types/schema'
+import { useFetchStore } from '~/stores/useFetchStore'
 
-const client = useSupabaseClient<Database>()
-
-const { data: albums, pending } = await useAsyncData(
-  'albums',
-  async () =>
-    client
-      .from('albums')
-      .select(`*, musics (*), license(*), consoles(*)`)
-      .order('id'),
-  {
-    transform: (result) => result.data,
-  }
+const useFetch = useFetchStore()
+const { data: albums } = await useAsyncData('albums', () =>
+  useFetch.fetchAlbumsFull()
 )
 </script>
 
 <style lang="postcss" scoped>
 h2 {
-  @apply font-semibold text-4xl w-11/12 mx-auto;
+  @apply font-semibold text-4xl w-11/12 mx-auto pb-6;
 }
 
 table {

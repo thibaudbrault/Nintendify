@@ -3,15 +3,15 @@
     <div class="albumsHeader">
       <h1>Albums</h1>
       <input
+        id="search"
         v-model="search"
         type="text"
         name="search"
-        id="search"
         placeholder="Search"
       />
     </div>
     <ul class="albumsList">
-      <li v-for="result in results">
+      <li v-for="result in results" :key="result.item.name">
         <NuxtLink :to="`/album/${result.item.name}`">
           {{ result.item.name }}
         </NuxtLink>
@@ -21,14 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { useFetchStore } from '~/stores/useFetchStore'
 import { useFuse } from '@vueuse/integrations/useFuse'
+import { useFetchStore } from '~/stores/useFetchStore'
 
 const search = ref<string>('')
 
-const musicsStore = useFetchStore()
+const useFetch = useFetchStore()
 const { data: albums } = await useAsyncData('albums', () =>
-  musicsStore.fetchAlbums()
+  useFetch.fetchAlbums()
 )
 
 const options = computed(() => ({
@@ -40,7 +40,6 @@ const options = computed(() => ({
 }))
 
 const { results } = useFuse(search, albums.value, options.value)
-console.log(results)
 </script>
 
 <style lang="postcss" scoped>

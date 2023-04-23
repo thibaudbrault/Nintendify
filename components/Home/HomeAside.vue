@@ -2,7 +2,7 @@
   <aside>
     <h2>new albums</h2>
     <ol>
-      <li v-for="album in albums">
+      <li v-for="album in albums" :key="album.name">
         <NuxtLink :to="`/album/${album.name}`">
           <nuxt-img :src="album.image" width="50" height="50" />
           <p>{{ album.name }}</p>
@@ -13,24 +13,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Database } from '~/types/schema'
+import { useFetchStore } from '~/stores/useFetchStore'
 
-const client = useSupabaseClient<Database>()
-
-const { data: albums } = await useAsyncData(
-  'albums',
-  async () =>
-    client
-      .from('albums')
-      .select(`*`)
-      .order('id', { ascending: false })
-      .limit(3),
-  {
-    transform: (result) => result.data,
-  }
+const useFetch = useFetchStore()
+const { data: albums } = await useAsyncData('music', () =>
+  useFetch.fetchAlbumsWithLimit()
 )
-
-console.log(albums.value)
 </script>
 
 <style lang="postcss" scoped>

@@ -7,9 +7,9 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/stores/usePlayerStore.js'
 import { useTrackStore } from '~/stores/useTrackStore'
-import { storeToRefs } from 'pinia'
 
 const usePlayer = usePlayerStore()
 const { hidePlayer } = usePlayer

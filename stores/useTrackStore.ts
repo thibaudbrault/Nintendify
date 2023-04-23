@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 
 export const useTrackStore = defineStore('track', () => {
-  const trackNb = useTrackNb()
+  const selected = useSelected()
   const isPlaying = ref<boolean>(false)
   const audio = ref<HTMLAudioElement | null>(null)
   const curTrack = ref(null)
@@ -9,8 +9,7 @@ export const useTrackStore = defineStore('track', () => {
   const curTime = ref<string | number>('0:00')
   const duration = ref<string | null>(null)
 
-  const loadTrack = (track) => {
-    // curAlbum.value = album
+  const loadTrack = (length: number, track) => {
     curTrack.value = track
     if (audio.value && audio.value.src) {
       audio.value.pause()
@@ -23,8 +22,12 @@ export const useTrackStore = defineStore('track', () => {
       audio.value?.play()
     }, 300)
     audio.value.onended = () => {
-      next(curTrack.value)
-      isPlaying.value = true
+      if (length - 1 > selected.value) {
+        next(curTrack.value)
+        isPlaying.value = true
+      } else {
+        isPlaying.value = false
+      }
     }
     audio.value.onloadedmetadata = () => {
       isPlaying.value = true
@@ -62,15 +65,19 @@ export const useTrackStore = defineStore('track', () => {
     }
   }
 
-  const previous = (curTrack) => {
-    if (trackNb.value === 0) {
-      trackNb.value = 0
-    } else {
-      trackNb.value--
+  const previous = (track) => {
+    if (track) {
+      selected.value--
+      loadTrack(track)
     }
   }
 
-  const next = (curTrack) => {}
+  const next = (track) => {
+    if (track) {
+      selected.value++
+      loadTrack(track)
+    }
+  }
 
   const backward = () => {
     if (audio.value?.currentTime) {

@@ -10,11 +10,7 @@
   </section>
 </template>
 
-<script setup lang="ts">
-import { inject } from 'vue'
-
-const license = inject('license')
-</script>
+<script setup lang="ts"></script>
 
 <style lang="postcss" scoped>
 section {

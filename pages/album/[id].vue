@@ -29,9 +29,9 @@ import { useFetchStore } from '~/stores/useFetchStore'
 const route = useRoute()
 const title = route.params.id
 
-const musicsStore = useFetchStore()
+const useFetch = useFetchStore()
 const { data: album } = await useAsyncData('album', () =>
-  musicsStore.fetchAlbum(title as string)
+  useFetch.fetchAlbum(title as string)
 )
 </script>
 
