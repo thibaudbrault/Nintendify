@@ -62,7 +62,11 @@ section {
     @apply h-52 grid grid-cols-4 gap-8;
 
     & li {
-      @apply w-full flex items-center justify-center bg-stone-600 text-center rounded-md capitalize font-semibold;
+      @apply w-full h-full bg-stone-600 text-center rounded-md capitalize font-semibold p-4;
+
+      & a {
+        @apply w-full h-full flex items-center justify-center text-xl;
+      }
     }
   }
 }
