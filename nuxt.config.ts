@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@nuxtjs/supabase',
     '@pinia/nuxt',
+    '@vueuse/nuxt',
   ],
   typescript: {
     strict: true,

@@ -17,18 +17,20 @@ import type { Database } from '~/types/schema'
 
 const client = useSupabaseClient<Database>()
 
-const { data: albums, pending } = await useAsyncData(
+const { data: albums } = await useAsyncData(
   'albums',
   async () =>
     client
       .from('albums')
       .select(`*`)
-      .order('created_at', { ascending: false })
+      .order('id', { ascending: false })
       .limit(3),
   {
     transform: (result) => result.data,
   }
 )
+
+console.log(albums.value)
 </script>
 
 <style lang="postcss" scoped>
