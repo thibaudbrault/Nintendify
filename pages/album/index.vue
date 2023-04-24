@@ -21,6 +21,13 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Albums - Nintendify',
+  ogTitle: 'Albums - Nintendify',
+  description: 'List of albums available on Nintendify',
+  ogDescription: 'List of albums available on Nintendify',
+})
+
 import { useFuse } from '@vueuse/integrations/useFuse'
 import { useFetchStore } from '~/stores/useFetchStore'
 
