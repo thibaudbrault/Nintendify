@@ -8,6 +8,8 @@ export const useTrackStore = defineStore('track', () => {
   const curAlbum = ref(null)
   const curTime = ref<string | number>('0:00')
   const duration = ref<string | null>(null)
+  const isLooping = ref<boolean>(false)
+  const isRandom = ref<boolean>(false)
 
   const loadTrack = (length: number, track) => {
     curTrack.value = track
@@ -50,7 +52,7 @@ export const useTrackStore = defineStore('track', () => {
 
   const playPauseTrack = (track) => {
     if (!audio || !audio.value?.src) {
-      loadTrack(track)
+      loadTrack(NaN, track)
     }
   }
 
@@ -68,15 +70,30 @@ export const useTrackStore = defineStore('track', () => {
   const previous = (track) => {
     if (track) {
       selected.value--
-      loadTrack(track)
+      loadTrack(NaN, track)
     }
   }
 
   const next = (track) => {
     if (track) {
-      selected.value++
-      loadTrack(track)
+      if (!isLooping.value && !isRandom.value) {
+        selected.value++
+        loadTrack(NaN, track)
+      } else if (isLooping.value) {
+        loop()
+      } else if (isRandom.value) {
+        random()
+      }
     }
+  }
+
+  const loop = () => {
+    isRandom.value = false
+    selected.value = selected.value
+  }
+
+  const random = () => {
+    isLooping.value = false
   }
 
   const backward = () => {
@@ -107,12 +124,16 @@ export const useTrackStore = defineStore('track', () => {
     curAlbum,
     curTime,
     duration,
+    isLooping,
+    isRandom,
     loadTrack,
     calculateTime,
     playPause,
     playPauseTrack,
     previous,
     next,
+    loop,
+    random,
     backward,
     forward,
     resetState,
