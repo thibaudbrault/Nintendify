@@ -1,33 +1,29 @@
 <template>
   <section>
     <div class="buttonContainer">
-      <button title="Shuffle">
-        <Icon name="game-icons:perspective-dice-six-faces-random" />
+      <button :class="{ random: isRandom }" title="Shuffle" @click="playRandom">
+        <Icon name="fad:shuffle" />
       </button>
       <button title="Previous" @click="previous(music[selected - 1])">
-        <Icon name="game-icons:previous-button" />
+        <Icon name="fad:prev" />
       </button>
       <button title="Backwrad 10s" @click="backward">
-        <Icon name="game-icons:fast-backward-button" />
+        <Icon name="fad:backward" />
       </button>
       <button class="playButton" title="Pause" @click="playPause">
         <Transition name="slide-up">
-          <Icon
-            v-if="isPlaying"
-            class="buttonIcon"
-            name="game-icons:pause-button"
-          />
-          <Icon v-else class="buttonIcon" name="game-icons:play-button" />
+          <Icon v-if="isPlaying" class="buttonIcon" name="fad:pause" />
+          <Icon v-else class="buttonIcon" name="fad:play" />
         </Transition>
       </button>
       <button title="Forward 10s" @click="forward">
-        <Icon name="game-icons:fast-forward-button" />
+        <Icon name="fad:forward" />
       </button>
       <button title="Next" @click="next(music[selected + 1])">
-        <Icon name="game-icons:next-button" />
+        <Icon name="fad:next" />
       </button>
-      <button title="Loop">
-        <Icon name="game-icons:infinity" />
+      <button :class="{ loop: isLooping }" title="Loop" @click="playLoop">
+        <Icon name="fad:loop" />
       </button>
     </div>
     <div class="barContainer">
@@ -44,10 +40,21 @@ import { storeToRefs } from 'pinia'
 import { useTrackStore } from '~/stores/useTrackStore'
 
 const useTrack = useTrackStore()
-const { curTime, duration, isPlaying } = storeToRefs(useTrack)
-const { playPause, backward, forward, previous, next } = useTrack
+const { curTime, duration, isPlaying, isLooping, isRandom } =
+  storeToRefs(useTrack)
+const { playPause, backward, forward, previous, next, loop, random } = useTrack
 
 const selected = useSelected()
+
+const playRandom = () => {
+  isRandom.value = !isRandom.value
+  random()
+}
+
+const playLoop = () => {
+  isLooping.value = !isLooping.value
+  loop()
+}
 
 const { music } = inject('track')
 </script>
@@ -59,14 +66,19 @@ section {
   & .buttonContainer {
     @apply flex items-center gap-5;
     & button {
-      @apply text-2xl;
+      @apply text-3xl;
     }
     & .playButton {
-      @apply relative w-16 h-16 flex justify-center items-center text-4xl bg-stone-950 rounded-full;
+      @apply relative w-16 h-16 flex justify-center items-center text-5xl bg-stone-950 rounded-full;
 
       & .buttonIcon {
         @apply absolute;
       }
+    }
+
+    & .loop,
+    .random {
+      @apply text-red-500 transition duration-300;
     }
   }
 

@@ -3,19 +3,19 @@
     <div class="linksContainer">
       <div>
         <NuxtLink to="/" title="Home">
-          <Icon :name="homeIcon" />
+          <Icon name="iconoir:home" />
         </NuxtLink>
         <NuxtLink to="/album" title="Albums">
-          <Icon :name="albumIcon" />
+          <Icon name="iconoir:album-open" />
         </NuxtLink>
       </div>
       <hr />
       <div>
         <NuxtLink to="/favorites" title="Favorites">
-          <Icon :name="favIcon" />
+          <Icon name="iconoir:heart" />
         </NuxtLink>
         <NuxtLink to="/profile" title="Profile">
-          <Icon :name="userIcon" />
+          <Icon name="iconoir:user" />
         </NuxtLink>
       </div>
     </div>
@@ -35,11 +35,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '~/stores/usePlayerStore.js'
-
-const homeIcon = ref<string>('iconoir:home')
-const albumIcon = ref<string>('iconoir:album-open')
-const favIcon = ref<string>('iconoir:heart')
-const userIcon = ref<string>('iconoir:user')
 
 const store = usePlayerStore()
 const { isShown } = storeToRefs(store)
